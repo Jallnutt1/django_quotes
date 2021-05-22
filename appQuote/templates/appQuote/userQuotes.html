@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Quotes</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style2.css' %}">
+</head>
+
+<body>
+    <div id='wrapper'>
+        <div id="header">
+            <h2>Welcome {{user.fname}} {{user.lname}}</h2>
+            <p><a href="/appQuote">Back</a> <a class="btn" href="/logout">Log Out</a></p>
+        </div>
+
+        <div id="main-sec">
+            <div id="left-side">
+                <h2 class="center">{{selectUser.fname}} {{selectUser.lname}}s' Quotes</h2>
+                {% for quote in usersQuotes %}
+                    <div class="qBox">
+                        <p>{{quote.author}}: "{{quote.content}}"</p>
+                        <br>
+                        <p>Added on {{quote.created_at}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="right-side">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

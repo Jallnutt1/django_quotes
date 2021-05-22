@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style2.css' %}">
+</head>
+
+<body>
+    <div id='wrapper'>
+        <div id="header">
+            <h2>Welcome {{user.fname}} {{user.lname}}</h2>
+            <p><a href="/appQuote/myaccount/{{user.id}}">Edit My Account</a> <a class="btn" href="/logout">Log Out</a></p>
+        </div>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div id="main-sec">
+            <div id="left-side">
+                <h2 class="center">Quotes</h2>
+                {% for quote in quotes %}
+                    <div class="qBox">
+                        <p>{{quote.author}}: "{{quote.content}}"</p>
+                        <br>
+                        <p>Posted by <a href="/appQuote/user/{{quote.user.id}}">{{quote.user.fname}} {{quote.user.lname}}</a></p>
+                        <div class="like-section">
+                            <p>{{quote.likes.all | length}} people like this</p>
+                            {% if user in quote.likes.all %}
+                                <p class="right"><a class="btn" href="/appQuote/unlike/{{quote.id}}">Unlike</a></p>
+                            {% else %}
+                                <p class="right"><a class="btn" href="/appQuote/like/{{quote.id}}">Like!</a></p>
+                            {% endif %}
+                        </div>
+                        {% if user == quote.user %}
+                            <p>Is this here</p>
+                            <p><a href="/appQuote/delete/{{quote.id}}">Delete</a></p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+            <div id="right-side">
+                <h2 class="center">Add a Quote</h2>
+                <form action="addQuote" method="post">
+                {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td><label for="author">Author:</label></td>
+                            <td><input class="aInput" type="text" id="author" name="author"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="quote">Quote:</label></td>
+                            <td><textarea class="qInput" id="quote" name="quote"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button type="submit">Submit</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
